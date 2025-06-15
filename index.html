@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>White Label Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700&display=swap" />
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Sora', sans-serif;
+    }
+    
+    body {
+      overflow-x: hidden;
+      background: white;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Header Styles */
+    .header {
+      width: 100%;
+      height: 90px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: white;
+      border-top: 2px solid #0c1892;
+      justify-content: space-between;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 0 50px;
+      box-shadow: 0 2px 10px rgb(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .header.scrolled {
+      height: 80px;
+      box-shadow: 0 5px 20px rgb(0,0,0,0.1);
+    }
+    
+    .logo {
+      width: 140px;
+      height: 40px;
+      transition: all 0.3s ease;
+      
+    }
+    
+    .header.scrolled .logo {
+      width: 140px;
+      height: 40px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-link {
+      color: black;
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: #0C1892;
+    }
+    
+    .nav-link.active {
+      color: #0C1892;
+    }
+    
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #0C1892;
+    }
+    
+    .cta-button {
+      padding: 8px 20px;
+      background: white;
+      border-radius: 43px;
+      border: 2px solid #0C1892;
+      color: #0C1892;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .cta-button:hover {
+      background: #0C1892;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(12, 24, 146, 0.3);
+    }
+    
+    .language-switcher {
+      display: flex;
+      align-items: center;
+    }
+    
+    .language-option {
+      width: 32px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .language-option:first-child {
+      background: #0C1892;
+      color: white;
+      border-top-left-radius: 40px;
+      border-bottom-left-radius: 40px;
+    }
+    
+    .language-option:last-child {
+      background: white;
+      color: #0C1892;
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+      border: 1px solid #0C1892;
+    }
+    
+    /* Hero Section */
+    .hero {
+      width: 100%;
+      background: linear-gradient(180deg,  #0C1892 25%, #0B4BB7 75%);
+      padding-top: 175px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden; 
+      height: auto;
+      padding-right: 250px;
+      padding-bottom: 150px;
+    }
+
+    
+    
+    .hero-content {
+      width: 55%
+      padding-left: 0px;
+      animation: fadeIn 1s ease forwards;
+    }
+    
+    .hero-title {
+      color: white;
+      font-size: 35px;
+      font-weight: 300px;
+      width: 55%
+      margin-bottom: 50px;
+      line-height: 1.25;
+      padding-left: 60px;
+    }
+    
+    .hero-subtitle {
+      color: #F5F5F5;
+      font-size: 15px;
+      font-weight: 250px;
+      margin-bottom: 17px;
+      line-height: 1.35;
+      padding-left: 60px;
+    }
+    
+    .hero-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 100px;
+      padding-left: 60px;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 15px;
+      font-weight: 400px;
+    }
+    
+    .feature-icon {
+      width: 28px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .hero-image {
+    
+      width: 45%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;*/
+    }
+    
+    .hero-image img {
+      max-height: 90%;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .pattern {
+      position: absolute;
+      opacity: 0.2;
+      z-index: 1;
+    }
+    
+    .pattern-1 {
+      right: -50px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: float 8s ease-in-out infinite 1s;
+    }
+    
+    .pattern-2 {
+      left: 50%;
+      top: 30%;
+      animation: float 7s ease-in-out infinite 0.5s;
+    }
+
+    
+    /* Features Section 
+    .features {
+      padding: 100px 0;
+      background: white;
+    }
+    
+    .section-title {
+      text-align: center;
+      color: #14176C;
+      font-size: 35px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .feature-card {
+      background: white;
+      box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      animation: fadeIn 1s ease forwards;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon-container {
+      width: 64px;
+      height: 64px;
+      background: #DBEAFE;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .feature-title {
+      color: #0052A6;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .feature-description {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 1.6;
+      opacity: 0.9;
+    } */
+
+    /* Features Section */
+    .features {
+      padding: 100px 0;
+      background: white;
+    }
+    
+    h2.section-title {
+      text-align: center;
+      color: #14176C;
+      font-size: 35px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease forwards;
+      line-height: 1.6;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .feature-card {
+      background: white;
+      box-shadow: 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      animation: fadeIn 1s ease forwards;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-icon-container {
+      width: 64px;
+      height: 64px;
+      background: #DBEAFE;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+    
+    .feature-title {
+      color: #0052A6;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .feature-description {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .features-section {
+  background: linear-gradient(to right, #002366, #0033a0);
+  padding: 60px 20px;
+  color: #000;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.feature-card {
+  background: white;
+  padding: 25px 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card .icon {
+  width: 40px;
+  margin-bottom: 15px;
+}
+
+.feature-card h3 {
+  font-size: 18px;
+  color: #0033a0;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
+    
+    /* Services Section */
+
+    body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.services-section {
+  background: linear-gradient(to bottom, #16146c , #0B4BB7 );
+  padding: 60px 20px;
+  color: #000;
+}
+
+.services-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.services-column {
+  background: transparent;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.services-column h2 {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.services-image1 {
+  max-width: 100%;
+  padding-top: 20px;
+  height: auto;
+  margin-bottom: 40px;
+  
+} 
+.services-image2 {
+  max-width: 100%;
+  padding-top: 60px;
+  height: auto;
+  margin-bottom: 40px;
+}
+.services-image4 {
+  max-width: 100%;
+  padding-top: 60px;
+  height: auto;
+  margin-bottom: 40px;
+}
+.services-image5 {
+  max-width: 100%;
+  padding-top: 60px;
+  height: auto;
+  margin-bottom: 40px;
+}
+
+
+
+
+.service-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.service-card .icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #0056ff;
+}
+
+.service-card h3 {
+  font-size: 18px;
+  color: #002b80;
+  margin: 10px 0;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: #333;
+}
+
+
+    /* Services Section */
+   /*
+
+    .services {
+      padding: 100px 0;
+      background: linear-gradient(180deg, #16146C 0%, #0B4BB7 100%);
+      position: none;
+      overflow: hidden;
+     
+    }
+    
+    .services-title {
+      text-align: center;
+      color: white;
+      font-size: 35px;
+      font-weight: 700;
+      margin-bottom: 80px;
+    }
+    
+    
+    .services-container {
+      display: flex;
+      justify-content: center;
+      gap: 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .service-column {
+      flex: 1;
+      max-width: 500px;
+    }
+    
+    .service-title {
+      color: white;
+      font-size: 35px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .service-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .service-card-title {
+      color: #0052A6;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .service-card-description {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      text-align: center;
+      opacity: 0.9;
+    }*/
+    
+    /* Security Section */
+    .security {
+      padding: 100px 0;
+      background: white;
+    }
+    
+    .security-title {
+      text-align: center;
+      color: #001F5C;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .security-subtitle {
+      text-align: center;
+      color: #4B5563;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 768px;
+      margin: 0 auto 50px;
+    }
+    
+    .security-container {
+      display: flex;
+      max-width: 1537px;
+      margin: 0 auto;
+      background: #14176C;
+      border-radius: 14px;
+      box-shadow: 0 25px 20px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      position: relative;
+      height: 384px;
+    }
+    
+    .security-content {
+      width: 50%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .security-item {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .security-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .security-item-title {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .security-item-description {
+      color: white;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    
+    .security-image {
+      width: 50%;
+      position: relative;
+    }
+    
+    .security-image img {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: 100%;
+      max-height: 80%;
+      border-radius: 5px;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Benefits Section */
+    .benefits {
+      padding: 100px 0;
+      background: white;
+    }
+    
+    .benefits-title {
+      text-align: center;
+      color: #001F5C;
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .benefits-subtitle {
+      text-align: center;
+      color: #001F5C;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      opacity: 0.8;
+      margin-bottom: 60px;
+    }
+    
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .benefit-card {
+      background: #14166C;
+      box-shadow: 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .benefit-icon {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 16px;
+    }
+    
+    .benefit-title {
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    
+    .benefit-description {
+      color: white;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+    .benefits-image3 {
+  max-width: 100%;
+  padding-top: 20px;
+  height: 50px;
+  margin-bottom: 40px;
+  
+} 
+
+
+    /* Contact Section */
+    .contact {
+      width: 100%;
+      height: 864px;
+      position: relative;
+      background-image: url('https://placehold.co/1920x864');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+    }
+    
+    .contact-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+    }
+    
+    .contact-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 50px;
+    }
+    
+    .contact-info {
+      width: 40%;
+      animation: slideInLeft 1s ease forwards;
+    }
+    
+    .contact-title {
+      color: white;
+      font-size: 46px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 50px;
+    }
+    
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+    }
+    
+    .contact-detail-title {
+      color: white;
+      font-size: 23px;
+      font-weight: 300;
+      margin-bottom: 5px;
+    }
+    
+    .contact-detail-text {
+      color: white;
+      font-size: 21px;
+      font-weight: 200;
+      line-height: 1.5;
+    }
+    
+    .contact-form-container {
+      width: 40%;
+      animation: slideInRight 1s ease forwards;
+    }
+    
+    .contact-form-title {
+      color: white;
+      font-size: 35px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    
+    .contact-form {
+      width: 100%;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-label {
+      display: block;
+      color: white;
+      font-size: 21px;
+      font-weight: 200;
+      margin-bottom: 10px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px 15px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #D9D9D9;
+      color: white;
+      font-size: 19px;
+      font-weight: 400;
+    }
+    
+    .form-input::placeholder {
+      color: #757575;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .form-submit {
+      background: #133AA5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 17px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block; /* Ensure it's visible as a block element */
+      min-width: 100px; /* Give it a minimum width */
+      text-align: center; /* Center the text */
+    }
+    
+    .form-submit:hover {
+      background: #0E2D8C;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(19, 58, 165, 0.3); /* Add shadow on hover */
+    }
+    
+    .presentation {
+      width: 40%;
+      animation: fadeIn 1s ease forwards;
+    }
+    
+    .presentation-title {
+      color: white;
+      font-size: 25px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    
+    .presentation-text {
+      color: white;
+      font-size: 21px;
+      font-weight: 200;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+    
+    .social-icon {
+      width: 38px;
+      height: 38px;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      transform: translateY(-5px);
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .footer-link {
+      color: white;
+      font-size: 21px;
+      font-weight: 200;
+      text-decoration: none;
+      position: relative;
+      padding: 0 10px;
+    }
+    
+    .footer-link:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 20px;
+      background: #133AA5;
+    }
+    
+    /* Login Box - Complete Redesign */
+    .login-box {
+      position: absolute;
+      right: 120px;
+      top: 130px;
+      width: 620px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      padding: 25px;
+      z-index: 1;
+      border: 2px solid #0C1892;
+      height: auto;
+      max-height: none; /* No fixed max-height */
+      overflow: visible; /* Remove scrollbars */
+    }
+
+
+    /* Header styling */
+    .login-box h2 {
+      color: #16146C;
+      font-size: 25px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+      padding-bottom: 10px;
+    }
+    /*.form-container {
+      max-width: 400px;
+      padding: 30px 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      margin-right: 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    /*.form-container {
+    /* Form layout */
+      /*.login-box form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }*/
+
+    .form-group {
+      margin-bottom: 5px;
+    }
+
+    /* Input & Label styling */
+    .login-box label {
+      display: block;
+      font-size: 17px;
+      font-weight: 400;
+      color: #333;
+      margin-bottom: 10px;
+    }
+     
+
+    .login-box input,
+    .login-box textarea,
+    .login-box select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #f8f9fa;
+      transition: all 0.2s ease;
+      margin-bottom: 10px;
+    }
+
+    .login-box input::placeholder,
+    .login-box textarea::placeholder,
+    .login-box select::placeholder {
+      color: #6c757d;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .login-box input:focus,
+    .login-box textarea:focus,
+    .login-box select:focus {
+      border-color: #0C1892;
+      box-shadow: 0 0 0 3px rgba(12, 24, 146, 0.1);
+      background-color: white;
+      outline: none;
+    }
+
+    /* Radio group layout */
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      width: auto;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* Submit button */
+    .login-box button {
+      background: #0C1892;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 15px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .login-box button:hover {
+      background: #0a1370;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(12, 24, 146, 0.2);
+    }
+
+    /* Responsive behavior */
+    @media (max-width: 768px) {
+      .login-box {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 90%;
+        max-width: 360px;
+        margin: 20px auto;
+      }
+
+      .login-box input,
+      .login-box textarea,
+      .login-box select,
+      .login-box input::placeholder,
+      .login-box textarea::placeholder,
+      .login-box select::placeholder {
+        font-size: 16px;
+      }
+    }
+
+    
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <img src="assets/images/eit-logo.png" alt="Company Logo" class="logo" />
+    
+    <nav class="nav-links">
+      <a href="#" class="nav-link active">Home</a>
+      <a href="#" class="nav-link">Products</a>
+      <a href="#" class="nav-link">About Us</a>
+      <a href="#" class="nav-link">Contact</a>
+      <a href="#" class="nav-link">Blogs</a>
+      <a href="#" class="nav-link">Brochure</a>
+    </nav>
+    
+    <button class="cta-button">Let's discuss</button>
+    
+    <div class="language-switcher">
+      <div class="language-option">EN</div>
+      <div class="language-option">AR</div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">White-Label IoT and GPS Tracking Solutions</h1>
+      <p class="hero-subtitle">Offer cutting-edge IoT and GPS Tracking solutions under your own brand. Our white-label platform offers the infrastructure, flexibility, and scalability to enable you to provide high-value services to your customers—without in-house development.</p>
+      
+      <div class="hero-features">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="assets/images/Checkmark.png" alt="Checkmark Icon" width="20" height="20" />
+
+          </div>
+          <span>Great quality with unbeatable performance</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="assets/images/Checkmark.png" alt="Checkmark Icon" width="20" height="20" />
+
+          </div>
+          <span>Highest Cyber security standards</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="assets/images/Checkmark.png" alt="Checkmark Icon" width="20" height="20" />
+
+          </div>
+          <span>Your domain, SSL, logo, etc.</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="assets/images/Checkmark.png" alt="Checkmark Icon" width="20" height="20" />
+
+          </div>
+          <span>You control your customer pricing</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="assets/images/Checkmark.png" alt="Checkmark Icon" width="20" height="20" />
+          </div>
+          <span>Priority access to our technical team</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="hero-image">
+      <img src="https://placehold.co/500x500" alt="IoT Solutions" />
+      <img src="https://placehold.co/226x491" alt="Pattern" class="pattern pattern-1" />
+      <img src="https://placehold.co/226x491" alt="Pattern" class="pattern pattern-2" />
+    </div>
+    
+    <!-- Login Box -->
+    <div class="login-box">
+      <h2>GET IN TOUCH WITH US TODAY!</h2>
+      <form>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input  type="text" id="name" placeholder="Your Full Name" required />
+          </div>
+          <div class="form-group">
+            <label for="company">Company Name</label>
+            <input type="text" id="company" placeholder="Your Company" required />
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Preferred contact method</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="contact" value="email" checked /> Email
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="contact" value="mobile" /> Mobile
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" id="email" placeholder="your.email@example.com" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="industry">Your Industry</label>
+          <input type="text" id="industry" placeholder="e.g., Logistics, Security" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="Tell us more about your needs..."></textarea>
+        </div>
+        
+        <button type="submit">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 10L11 17L4 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 1V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          SUBMIT
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <!-- Features Section -->
+  <section class="features">
+    <h2 class="section-title"> Explore the powerful features that make our platform a 
+      </h2>
+    <h2 class="section-title"> 
+                comprehensive solution for your business.</h2>
+    
+   <!-- Carousel Section -->
+  <div class="carousel">
+  <div class="slides">
+    <img src="assets/images/slide1.png" class="slide" alt="Slide 1">
+    <img src="assets/images/slide2.png" class="slide" alt="Slide 2">
+    <img src="assets/images/slide3.png" class="slide" alt="Slide 3">
+    <img src="assets/images/slide4.png" class="slide" alt="Slide 4">
+    <img src="assets/images/slide5.png" class="slide" alt="Slide 5">
+    <img src="assets/images/slide6.png" class="slide" alt="Slide 6">
+  </div>
+</div>
+
+
+    
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <div class="services-wrapper">
+      <!-- GPS Tracking Services -->
+      <div class="services-column">
+        <h2>GPS Tracking Services</h2>
+        <img src="assets/images/gps.png" alt="Devices Image" class="services-image4"/>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 1.png" alt="Devices Image" class="services-image1"/></div>
+          
+          <h3>Live GPS Tracking</h3>
+          <p>Track vehicles, assets, or staff in real time with improved operating control and visibility.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 3.png" alt="Devices Image" class="services-image1"/></div>
+          <h3>Geofencing & Smart Alerts</h3>
+          <p>Get immediate notifications when assets move in/out of designated areas, assisting in security policies and regulatory compliance.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 5.png" alt="Devices Image" class="services-image1"/></div>
+          <h3>Historical Data & Analytics</h3>
+          <p>View movement history and performance reporting to identify trends, enhance efficiency, and make strategic decisions.</p>
+        </div>
+      </div>
+
+      <!-- IoT Services -->
+      <div class="services-column">
+        <h2>IoT Services</h2>
+        <img src="assets/images/iot.png" alt="Devices Image" class="services-image5"/>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 2.png" alt="Devices Image" class="services-image2"/></div>
+          <h3>Integrated Sensing Capabilities</h3>
+          <p>Seamlessly incorporate diverse sensors to monitor and manage key operational processes in real time.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 4.png" alt="Devices Image" class="services-image2"/></div>
+          <h3>Advanced Data Intelligence</h3>
+          <p>Apply sophisticated analytics to transform raw IoT data into meaningful business insights and informed decisions.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon"><img src="assets/images/Component 6.png" alt="Devices Image" class="services-image2"/></div>
+          <h3>Remote Asset Oversight</h3>
+          <p>Enable comprehensive tracking and control of assets and systems from any location with remote monitoring tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits">
+    <h2 class="benefits-title">Why Choose Our White-Label Solution?</h2>
+    <p class="benefits-subtitle">Empower Your Brand, Delight Your Customers</p>
+    
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3.16667" y="3.16667" width="31.6667" height="31.6667" stroke="white" stroke-width="3.16667"/>
+            <circle cx="20.5833" cy="9.5" r="1.58333" fill="white" stroke="white" stroke-width="3.16667"/>
+            <circle cx="26.9167" cy="15.8333" r="1.58333" fill="white" stroke="white" stroke-width="3.16667"/>
+            <circle cx="12.6667" cy="11.0833" r="1.58333" fill="white" stroke="white" stroke-width="3.16667"/>
+            <circle cx="9.5" cy="19" r="1.58333" fill="white" stroke="white" stroke-width="3.16667"/>
+          </svg>
+        </div>
+        <h3 class="benefit-title">Fully Customizable Branding</h3>
+        <p class="benefit-description">Provide a unified brand experience by configuring the platform's appearance, interface, and communications to align with your business identity.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.25 28.5L23.75 19L14.25 9.5" stroke="white" stroke-width="3.16667" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="benefit-title">Accelerated Time-to-Market</h3>
+        <p class="benefit-description">Get to market fast with a pre-existing, tested solution that bypasses development lag and lowers initial costs.</p>
+      </div>
+      
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3.16667" y="3.16667" width="31.6667" height="6.33333" stroke="white" stroke-width="3.16667"/>
+            <rect x="3.16667" y="27.9583" width="31.6667" height="6.33333" stroke="white" stroke-width="3.16667"/>
+            <rect x="3.16667" y="20.0417"<p class="benefit-description">Drive business growth with confidence and a platform designed to scale by users, clients, and geographies.</p>
+            <rect width="31.6667" height="6.33333" stroke="white" stroke-width="3.16667"/>
+          </svg>
+        </div>
+        <h3 class="benefit-title">Scalable Architecture</h3>
+        
+      </div>
+      
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="19" cy="19" r="14.25" stroke="white" stroke-width="3.16667"/>
+          </svg>
+        </div>
+        <h3 class="benefit-title">Dedicated Technical Support</h3>
+        <p class="benefit-description">Get expert help and priority support to ensure hassle-free running and ongoing service excellence for your customers.</p>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Contact Section -->
+  <section class="contact">
+    <div class="contact-overlay"></div>
+    
+    <div class="contact-content">
+      <div class="contact-info">
+        <h2 class="contact-title">Thinking about your next project?</h2>
+        
+        <div class="contact-detail">
+          <img src="https://placehold.co/33x38" alt="Address" class="contact-icon" />
+          <div>
+            <h4 class="contact-detail-title">Office Address</h4>
+            <p class="contact-detail-text">No.813, 6th-floor Nizara Bonanza, Opp LIC Building, Anna Salai, Chennai, Tamil Nadu - 600002</p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <img src="https://placehold.co/38x38" alt="Phone" class="contact-icon" />
+          <div>
+            <h4 class="contact-detail-title">Phone</h4>
+            <p class="contact-detail-text">+91 95008 66462</p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <img src="https://placehold.co/38x38" alt="Email" class="contact-icon" />
+          <div>
+            <h4 class="contact-detail-title">Email</h4>
+            <p class="contact-detail-text">sales@ethicalintelligent.com</p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <img src="https://placehold.co/38x38" alt="Hours" class="contact-icon" />
+          <div>
+            <h4 class="contact-detail-title">Business Hours</h4>
+            <p class="contact-detail-text">Monday to Friday<br/>9 AM - 8 PM IST</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form-container">
+        <h3 class="contact-form-title">Say Hello</h3>
+        
+        <form class="contact-form">
+          <div class="form-group">
+            <label class="form-label">Hello there, my name is</label>
+            <input type="text" class="form-input" placeholder="Enter Your Name" />
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">and I'm looking for a team to help me with</label>
+            <input type="text" class="form-input" placeholder="Give a short description" />
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">you can reach me at</label>
+            <div class="form-row">
+              <input type="text" class="form-input" placeholder="Country code" style="width: 30%;" />
+              <input type="text" class="form-input" placeholder="Mobile number" style="width: 70%;" />
+            </div>
+          </div>
+          
+          <div class="form-row" style="align-items: flex-end;">
+            <input type="email" class="form-input" placeholder="your mail" style="width: 70%;" />
+            <button type="submit" class="form-submit" style="display: inline-block; margin-left: 10px;">Send</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="presentation">
+        <h3 class="presentation-title">Need a Presentation?</h3>
+        <p class="presentation-text">Do you like what we do? Want to share it with your team? Now it's easy! Contact us for a presentation, and we'll walk you through everything you need to know!</p>
+        <p class="presentation-text">Get in touch to learn more!</p>
+        
+        <div class="social-links">
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+          <img src="https://placehold.co/38x38" alt="Social" class="social-icon" />
+        </div>
+        
+        <div class="footer-links">
+          <a href="#" class="footer-link">Home</a>
+          <a href="#" class="footer-link">IT Services</a>
+          <a href="#" class="footer-link">IOT Services</a>
+          <a href="#" class="footer-link">About</a>
+          <a href="#" class="footer-link">Contact</a>
+        </div>
+      </div>
+    </div>
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.feature-card, .benefit-card, .service-card, .security-item');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Initialize elements with opacity 0 for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.feature-card, .benefit-card, .service-card, .security-item');
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.6s ease';
+            });
+            
+            // Start animation for hero elements
+            document.querySelector('.hero-content').style.opacity = '1';
+            document.querySelector('.hero-content').style.transform = 'translateY(0)';
+            
+            if (document.querySelector('.login-box')) {
+                document.querySelector('.login-box').style.opacity = '1';
+                document.querySelector('.login-box').style.transform = 'scale(1)';
+            }
+        });
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Trigger once on load in case elements are already visible
+        animateOnScroll();
+        
+        // Enhanced Carousel Animation with hover effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                const slides = carousel.querySelector('.slides');
+                const slideItems = carousel.querySelectorAll('.slide');
+                let currentIndex = 0;
+                let autoSlideInterval;
+                const slideCount = slideItems.length;
+                
+                // Set initial position
+                slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                slides.style.display = 'flex';
+                
+                // Auto-slide function
+                function startAutoSlide() {
+                    autoSlideInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % slideCount;
+                        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    }, 5000); // Change slide every 5 seconds
+                }
+                
+                // Start auto-slide
+                startAutoSlide();
+                
+                // Pause on hover and advance to next slide
+                carousel.addEventListener('mouseenter', function() {
+                    clearInterval(autoSlideInterval);
+                    // Immediately go to next slide on hover
+                    currentIndex = (currentIndex + 1) % slideCount;
+                    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                });
+                
+                // Resume auto-slide when mouse leaves
+                carousel.addEventListener('mouseleave', startAutoSlide);
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                });
+            }
+        });
+    </script>
+  </section>
+ 
+    <style>
+        
+        
+        /* Animated Carousel styles */
+        .animated_carousel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin: 50px 0;
+        }
+        
+        .carousel {
+            width: 100%;
+            position: relative;
+        }
+        
+        .slides {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            will-change: transform;
+        }
+        
+        .slide {
+            min-width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .slide:nth-child(1) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .slide:nth-child(2) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .slide:nth-child(3) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .slide:nth-child(4) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .slide:nth-child(5) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .slide:nth-child(6) {
+            background-color: white;
+            color: white;
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+  
+    
+    <main>
+        
+        
+        
+        
+       
+        
+        
+    </main>
+    
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Animate elements when they come into view
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.feature-card, .benefit-card, .service-card, .security-item');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Initialize elements with opacity 0 for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.feature-card, .benefit-card, .service-card, .security-item');
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.6s ease';
+            });
+            
+            // Start animation for hero elements
+            document.querySelector('.hero-content').style.opacity = '1';
+            document.querySelector('.hero-content').style.transform = 'translateY(0)';
+            
+            if (document.querySelector('.login-box')) {
+                document.querySelector('.login-box').style.opacity = '1';
+                document.querySelector('.login-box').style.transform = 'scale(1)';
+            }
+        });
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Trigger once on load in case elements are already visible
+        animateOnScroll();
+        
+        // Enhanced Carousel Animation with hover effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel');
+            if (carousel) {
+                const slides = carousel.querySelector('.slides');
+                const slideItems = carousel.querySelectorAll('.slide');
+                let currentIndex = 0;
+                let autoSlideInterval;
+                const slideCount = slideItems.length;
+                
+                // Set initial position
+                slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                slides.style.display = 'flex';
+                
+                // Auto-slide function
+                function startAutoSlide() {
+                    autoSlideInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % slideCount;
+                        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    }, 5000); // Change slide every 5 seconds
+                }
+                
+                // Start auto-slide
+                startAutoSlide();
+                
+                // Pause on hover and advance to next slide
+                carousel.addEventListener('mouseenter', function() {
+                    clearInterval(autoSlideInterval);
+                    // Immediately go to next slide on hover
+                    currentIndex = (currentIndex + 1) % slideCount;
+                    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                });
+                
+                // Resume auto-slide when mouse leaves
+                carousel.addEventListener('mouseleave', startAutoSlide);
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
